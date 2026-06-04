@@ -1,0 +1,9 @@
+.DS_Store
+build/
+*.app/
+*.iconset/
+
+# Local generated app bundles and intermediate icon outputs.
+PikachuPet.app/
+CleanAppIcon.iconset/
+app_icon.iconset/
