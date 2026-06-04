@@ -1,67 +1,107 @@
-# 皮卡丘桌面宠物
+# Pikachu Desktop Pet
 
-这是一个 macOS 原生 Swift/AppKit 小程序：透明悬浮窗口、拖动移动、动作交互面板、轻微摇摆动画，不需要安装第三方依赖。
+A native macOS desktop pet built with Swift and AppKit. It runs as a transparent floating window, can be dragged around the desktop, plays sprite-based animations, and includes a compact interaction panel.
 
-## 运行
+This is a personal, non-commercial fan build. It is not affiliated with or endorsed by Nintendo, The Pokemon Company, or Game Freak.
 
-双击 `run.command`。
+## Run
 
-现在也已经打包成 App，可以在 `/Applications/PikachuPet.app` 双击启动。
+Double-click:
 
-默认窗口现在是旧版视觉面积的四分之一，动作交互面板可以变大或变小。
-
-如果 `pmd_sprites/` 动作资源存在，程序会优先使用 PMD 风格逐帧动画：
-
-- 静止：固定 `Idle-Anim.png` 第一帧
-- 普通点击：原地跳一下
-- 连续点击：按屏幕位置向外侧跑一段
-- 动作指令：可以单独触发左跑、右跑、向上跳、鞠躬、摆姿势、倒下
-- 跑动：播放 `Walk-Anim.png`
-
-左右键不再区分功能；普通点击都会触发跳跃，快速点击会触发跑动。按住 Option 再点击可以打开动作交互面板，用于选择动作、变大、变小、置顶或退出。
-
-皮卡丘现在有“活泼可爱”的自主性格：如果大约 12 秒以上没有互动，它会自己挑一个小动作，可能跳一下、点头、摆姿势、摔倒，偶尔短跑一段。你点击或拖动它后，这个冷落计时会重置。
-
-不同动作帧已经做了统一视觉缩放，避免动作切换时忽大忽小。
-
-PMD 动作资源来自 PMDCollab/SpriteCollab 的 `sprite/0025`，仅用于本地个人 fan build。
-
-如果 macOS 第一次拦截脚本，可以在终端执行：
-
-```zsh
-chmod +x run.command
-./run.command
+```text
+run.command
 ```
 
-## 使用你给的图片
+The app can also be launched from:
 
-把聊天里那张皮卡丘图片保存为：
+```text
+/Applications/PikachuPet.app
+```
+
+The default window is intentionally small. Use the interaction panel to resize it.
+
+## Features
+
+- Transparent floating macOS desktop pet window
+- Drag-to-move behavior
+- Compact side interaction panel
+- Keyboard action commands
+- Static idle pose with animated actions
+- Autonomous playful behavior after a period of no interaction
+- Optional custom pet image in `assets/pet.png`
+- PMD-style sprite animation support through `pmd_sprites/`
+
+When `pmd_sprites/` is available, the app uses the PMD sprite animations:
+
+- Idle: fixed first frame from `Idle-Anim.png`
+- Click: jump in place
+- Rapid click: run outward based on screen position
+- Commands: run left, run right, jump, bow, pose, and fall down
+- Running: `Walk-Anim.png`
+
+If no sprite assets are available, the app falls back to `assets/pet.png`, and then to the built-in drawing.
+
+## Controls
+
+- Drag: move the pet
+- Click: jump in place
+- Rapid click: run outward
+- Option + click: open the side interaction panel
+
+Keyboard commands:
+
+- `A`: run left
+- `D`: run right
+- `W`: jump up
+- `S`: fall down
+- `B`: bow
+- `P`: pose
+
+The interaction panel uses short English labels:
+
+- `Left A`
+- `Jump W`
+- `Right D`
+- `Bow B`
+- `Pose P`
+- `Down S`
+- `Sm`, `Lg`, `Pin`, `Quit`
+
+The panel opens on the left or right side of the pet, depending on available screen space.
+
+## Custom Image
+
+Place a custom pet image here:
 
 ```text
 assets/pet.png
 ```
 
-然后重新运行 `run.command`。程序会优先读取这个图片，并自动尝试把白色背景抠成透明。没有 `assets/pet.png` 时，会使用内置绘制版本。
+The app also supports `pet.jpg` and `pet.jpeg`, but PNG is recommended for cleaner transparency.
 
-抠图会移除从图片边缘连通的白色背景，也会移除耳朵、尾巴等轮廓之间较大的内部白色空洞，并保留眼睛高光等小白色区域。
+For custom images, the app tries to remove white backgrounds automatically, including larger interior white gaps while preserving small highlights.
 
-## 操作
+## Build Notes
 
-- 左键拖动：移动桌面宠物
-- 单击：原地跳一下
-- 快速连续点击：按屏幕位置向外侧跑一段
-- Option + 点击：在皮卡丘左侧或右侧打开动作交互面板
-- 动作交互面板使用英文短标签，可以选择动作、变大、变小、切换始终置顶、退出
+This project is intentionally dependency-free. It builds with the macOS Swift toolchain and AppKit:
 
-## 动作指令
+```zsh
+swiftc \
+  -target arm64-apple-macosx14.0 \
+  -module-cache-path build/module-cache \
+  DesktopPet.swift \
+  -o build/PikachuPet \
+  -framework AppKit \
+  -framework CoreGraphics
+```
 
-点一下皮卡丘让它获得焦点后，可以按这些键直接触发动作：
+`run.command` wraps this build command and runs the compiled app.
 
-- `A`：向左跑
-- `D`：向右跑
-- `W`：向上跳
-- `S`：倒下
-- `B`：鞠躬
-- `P`：摆姿势
+## Assets
 
-跳跃时会移动整个透明窗口，不会裁掉耳朵或身体边缘。
+PMD sprite resources are from PMDCollab/SpriteCollab `sprite/0025`.
+
+- SpriteCollab: https://github.com/PMDCollab/SpriteCollab
+- PMD Collab sprites site: https://sprites.pmdcollab.org/
+
+The included assets are intended for this local/personal fan build. Check upstream asset terms before reusing or redistributing them.

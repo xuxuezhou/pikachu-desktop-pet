@@ -1,3 +1,9 @@
-把你想用的宠物图片放在这里，并命名为 `pet.png`。
+# Assets
 
-程序也支持 `pet.jpg` 和 `pet.jpeg`，但透明效果通常用 PNG 更好。
+Place the custom pet image in this folder and name it:
+
+```text
+pet.png
+```
+
+The app also supports `pet.jpg` and `pet.jpeg`, but PNG is recommended for cleaner transparency.
