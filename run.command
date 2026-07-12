@@ -8,8 +8,9 @@ mkdir -p build/module-cache
 swiftc \
   -target arm64-apple-macosx14.0 \
   -module-cache-path build/module-cache \
-  DesktopPet.swift \
+  Sources/*.swift \
   -o build/PikachuPet \
   -framework AppKit \
-  -framework CoreGraphics
+  -framework CoreGraphics \
+  -framework Carbon
 exec ./build/PikachuPet
