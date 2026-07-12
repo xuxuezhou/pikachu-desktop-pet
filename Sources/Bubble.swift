@@ -94,19 +94,28 @@ final class SpeechBubbleWindow: NSPanel {
         setContentSize(content.frame.size)
         contentView = content
 
-        let visible = (screen ?? NSScreen.main)?.visibleFrame
-            ?? NSRect(x: 0, y: 0, width: 1200, height: 800)
-        var origin = NSPoint(
-            x: petFrame.midX - content.frame.width / 2,
-            y: petFrame.maxY + 4
-        )
-        origin.x = min(max(origin.x, visible.minX + 6), visible.maxX - content.frame.width - 6)
-        origin.y = min(origin.y, visible.maxY - content.frame.height - 6)
-        setFrameOrigin(origin)
+        reposition(above: petFrame, on: screen)
         orderFront(nil)
 
         hideTimer = Timer.scheduledTimer(withTimeInterval: max(1.5, duration), repeats: false) { [weak self] _ in
             self?.dismiss()
+        }
+    }
+
+    /// Keeps the bubble anchored above the pet; called every frame while
+    /// visible so it follows runs, jumps, falls and drags.
+    func reposition(above petFrame: NSRect, on screen: NSScreen?) {
+        let size = frame.size
+        let visible = (screen ?? NSScreen.main)?.visibleFrame
+            ?? NSRect(x: 0, y: 0, width: 1200, height: 800)
+        var origin = NSPoint(
+            x: petFrame.midX - size.width / 2,
+            y: petFrame.maxY + 4
+        )
+        origin.x = min(max(origin.x, visible.minX + 6), visible.maxX - size.width - 6)
+        origin.y = min(origin.y, visible.maxY - size.height - 6)
+        if origin != frame.origin {
+            setFrameOrigin(origin)
         }
     }
 

@@ -101,6 +101,10 @@ final class PetView: NSView, PetControllerDelegate {
             validatePosition()
         }
 
+        if bubble.isVisible, let window {
+            bubble.reposition(above: window.frame, on: window.screen)
+        }
+
         let signature = renderSignature()
         if signature != lastRenderSignature {
             lastRenderSignature = signature
